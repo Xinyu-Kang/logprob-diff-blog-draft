@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
+  <title id="title">One replay, three raw-logprob checks</title>
+  <desc id="desc">A fixed replay artifact feeds rollout generation, rollout prefill replay, and trainer forward comparisons. A versus B isolates the generation path, while B versus C isolates cross-engine differences. Sampling processors and behavior logprobs are validated separately.</desc>
+
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#17213A" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow-navy" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#41516F"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#6F5DCC"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#238F89"/>
+    </marker>
+    <style>
+      .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+      .title { font-size: 48px; font-weight: 700; fill: #14213D; }
+      .subtitle { font-size: 24px; font-weight: 400; fill: #5C6880; }
+      .box-title { font-size: 26px; font-weight: 700; fill: #FFFFFF; letter-spacing: 0.4px; }
+      .body-title { font-size: 28px; font-weight: 700; fill: #17213A; }
+      .body-copy { font-size: 22px; font-weight: 400; fill: #4E5A72; }
+      .chip { font-size: 19px; font-weight: 600; fill: #6656B9; }
+      .chip-teal { font-size: 19px; font-weight: 600; fill: #247E79; }
+      .compare-title { font-size: 27px; font-weight: 700; }
+      .compare-copy { font-size: 21px; font-weight: 400; fill: #4E5A72; }
+      .small-label { font-size: 18px; font-weight: 600; fill: #6A758B; letter-spacing: 0.5px; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1100" fill="#F7F9FC"/>
+
+  <text x="800" y="72" text-anchor="middle" class="sans title">One replay, three raw-logprob checks</text>
+  <text x="800" y="114" text-anchor="middle" class="sans subtitle">Hold token IDs, masks, and the policy snapshot fixed</text>
+
+  <g filter="url(#shadow)">
+    <rect x="400" y="160" width="800" height="132" rx="28" fill="#172A4F"/>
+  </g>
+  <text x="800" y="213" text-anchor="middle" class="sans" font-size="31" font-weight="700" fill="#FFFFFF">Fixed replay artifact</text>
+  <text x="800" y="254" text-anchor="middle" class="sans" font-size="22" fill="#D7E1F4">Exact token IDs · positions · masks · policy version v0</text>
+
+  <path d="M800 292 L800 334 L300 334 L300 378" fill="none" stroke="#41516F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-navy)"/>
+  <path d="M800 292 L800 378" fill="none" stroke="#41516F" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow-navy)"/>
+  <path d="M800 334 L1300 334 L1300 378" fill="none" stroke="#41516F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-navy)"/>
+
+  <text x="300" y="326" text-anchor="middle" class="sans small-label">RECORDED DURING ROLLOUT</text>
+  <text x="1050" y="326" text-anchor="middle" class="sans small-label">REPLAY THE SAME TENSORS</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="390" width="440" height="258" rx="26" fill="#F0EDFF" stroke="#B9AEF5" stroke-width="3"/>
+    <path d="M106 390 H494 Q520 390 520 416 V464 H80 V416 Q80 390 106 390 Z" fill="#6656C8"/>
+  </g>
+  <text x="300" y="438" text-anchor="middle" class="sans box-title">A · ROLLOUT GENERATION</text>
+  <text x="300" y="507" text-anchor="middle" class="sans body-title">Raw logprob</text>
+  <text x="300" y="541" text-anchor="middle" class="sans body-title">recorded online</text>
+  <text x="300" y="576" text-anchor="middle" class="sans body-copy">The path that produced the token</text>
+  <rect x="153" y="594" width="294" height="38" rx="19" fill="#E2DCFF"/>
+  <text x="300" y="620" text-anchor="middle" class="sans chip">prefill · decode · KV cache</text>
+
+  <g filter="url(#shadow)">
+    <rect x="580" y="390" width="440" height="258" rx="26" fill="#F0EDFF" stroke="#B9AEF5" stroke-width="3"/>
+    <path d="M606 390 H994 Q1020 390 1020 416 V464 H580 V416 Q580 390 606 390 Z" fill="#6656C8"/>
+  </g>
+  <text x="800" y="438" text-anchor="middle" class="sans box-title">B · ROLLOUT PREFILL</text>
+  <text x="800" y="507" text-anchor="middle" class="sans body-title">Teacher-force</text>
+  <text x="800" y="541" text-anchor="middle" class="sans body-title">saved tokens</text>
+  <text x="800" y="576" text-anchor="middle" class="sans body-copy">Same rollout model, full sequence</text>
+  <rect x="665" y="594" width="270" height="38" rx="19" fill="#E2DCFF"/>
+  <text x="800" y="620" text-anchor="middle" class="sans chip">no generation state</text>
+
+  <g filter="url(#shadow)">
+    <rect x="1080" y="390" width="440" height="258" rx="26" fill="#E9F8F6" stroke="#8DD8D2" stroke-width="3"/>
+    <path d="M1106 390 H1494 Q1520 390 1520 416 V464 H1080 V416 Q1080 390 1106 390 Z" fill="#238F89"/>
+  </g>
+  <text x="1300" y="438" text-anchor="middle" class="sans box-title">C · TRAINER FORWARD</text>
+  <text x="1300" y="507" text-anchor="middle" class="sans body-title">Teacher-force</text>
+  <text x="1300" y="541" text-anchor="middle" class="sans body-title">saved tokens</text>
+  <text x="1300" y="576" text-anchor="middle" class="sans body-copy">No backward pass or optimizer step</text>
+  <rect x="1169" y="594" width="262" height="38" rx="19" fill="#D4F0ED"/>
+  <text x="1300" y="620" text-anchor="middle" class="sans chip-teal">training execution path</text>
+
+  <path d="M300 648 L300 700 L430 732" fill="none" stroke="#6F5DCC" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-purple)"/>
+  <path d="M800 648 L800 700 L650 732" fill="none" stroke="#6F5DCC" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-purple)"/>
+  <path d="M800 648 L800 700 L950 732" fill="none" stroke="#238F89" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-teal)"/>
+  <path d="M1300 648 L1300 700 L1170 732" fill="none" stroke="#238F89" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-teal)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="180" y="740" width="560" height="144" rx="24" fill="#FFFFFF" stroke="#B9AEF5" stroke-width="3"/>
+  </g>
+  <text x="460" y="790" text-anchor="middle" class="sans compare-title" fill="#6656C8">Δgeneration = B − A</text>
+  <text x="460" y="830" text-anchor="middle" class="sans compare-copy">Generation schedule, KV cache,</text>
+  <text x="460" y="860" text-anchor="middle" class="sans compare-copy">batching, or logprob extraction</text>
+
+  <g filter="url(#shadow)">
+    <rect x="860" y="740" width="560" height="144" rx="24" fill="#FFFFFF" stroke="#8DD8D2" stroke-width="3"/>
+  </g>
+  <text x="1140" y="790" text-anchor="middle" class="sans compare-title" fill="#238F89">Δengine = C − B</text>
+  <text x="1140" y="830" text-anchor="middle" class="sans compare-copy">Inputs, resident weights, kernels,</text>
+  <text x="1140" y="860" text-anchor="middle" class="sans compare-copy">reductions, or token gathering</text>
+
+  <rect x="250" y="936" width="1100" height="116" rx="24" fill="#FFF8E8" stroke="#D9A83E" stroke-width="3" stroke-dasharray="10 9"/>
+  <rect x="296" y="919" width="246" height="36" rx="18" fill="#F7F9FC"/>
+  <text x="419" y="944" text-anchor="middle" class="sans" font-size="19" font-weight="700" fill="#A06C12">VALIDATE SEPARATELY</text>
+  <text x="800" y="989" text-anchor="middle" class="sans" font-size="27" font-weight="700" fill="#44371E">Raw logits  →  sampling processors  →  behavior logprob</text>
+  <text x="800" y="1027" text-anchor="middle" class="sans" font-size="20" fill="#745F32">temperature · top-k / top-p · penalties · custom processors</text>
+</svg>
