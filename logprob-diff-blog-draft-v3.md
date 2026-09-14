@@ -1,4 +1,4 @@
-# Same Token, Different Logprob: A Practical Guide to Debugging LLM RL
+# Debugging Logprob Mismatches in LLM Reinforcement Learning
 
 In online reinforcement learning (RL), a language model generates responses, receives rewards, and updates its weights to improve future responses. Many systems split this loop between a **rollout engine**, which generates the responses, and a **trainer**, which learns from them. Both engines evaluate token probabilities: rollout records the log-probability, or **logprob**, of each token it generates, while the trainer evaluates those same tokens when computing its loss. After the update, the new weights are sent back to rollout, and the loop begins again.
 
