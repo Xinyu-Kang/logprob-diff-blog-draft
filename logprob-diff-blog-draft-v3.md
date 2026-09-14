@@ -322,9 +322,11 @@ For this pattern, inspect how C is calculated before assuming a weight or kernel
 \ell_t = z_t[x_t] - \log \sum_{v=1}^{V} \exp(z_t[v])
 ```
 
-The second term is usually computed with a numerically stable `logsumexp` operation. Compare the selected token ID, its logit, the vocabulary size, and this normalizer across paths. If the logits agree but logprobs differ, focus on scaling, normalization, or extraction. If the logits already disagree, continue upstream into the model.
+The second term is usually computed with a numerically stable `logsumexp` operation. Compare the target token ID, logits, temperature scaling, and vocabulary normalizer across paths. If the full vocabulary logits agree but logprobs differ, inspect normalization, extraction, and any later changes to the scores. If the logits already disagree, continue upstream into the model.
 
-Here, the error was the injected subtraction in C's returned scores. Removing it returned all three comparisons to the clean range. The next note shows how to distinguish that direct score corruption from a change in the probability definition.
+In Case 2, inspecting the scoring wrapper identifies the operation responsible. The wrapper first calls the original `calculate_log_probs_and_entropy` function, then applies `log_probs - offset` before returning the result. With `offset` set to 0.10, the change enters after the original logprob calculation. To check this boundary in your own run, capture the scores immediately after calculation and again after any postprocessing, within the same forward pass. A difference between those captures tells you where to investigate.
+
+Removing the injected subtraction reduced B-C MAE from 0.102164 to 0.007119, with all three comparisons returning to the clean range. Inspecting the hook identified the operation, and the fixed run verified its removal. The next note distinguishes this direct score corruption from a temperature-definition mismatch.
 
 <details>
 <summary><strong>How this differs from a real temperature mismatch</strong></summary>
